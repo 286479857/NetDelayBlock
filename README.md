@@ -30,7 +30,7 @@ AIDE 直接编译界面、配置与防火墙 Java 源码。Hook 入口使用附�
 python3 tools/rebuild_hooks.py /path/to/android.jar
 ```
 
-工程没有 Gradle Wrapper。本次公开发布仅提供源码，不提供 APK。
+工程没有 Gradle Wrapper。v7.0 Release 提供源码 ZIP 和已打包的 [APK](https://github.com/286479857/NetDelayBlock/releases/download/v7.0/NetDelayBlock-v7.0.apk)。
 
 ## 启用
 
