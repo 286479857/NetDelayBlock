@@ -31,7 +31,7 @@ Hook 完整源码位于 hook-source/src，其 API 位于 hook-source/api。
 5. 本版仍使用 SDK 28、Build Tools 28.0.3、Gradle 插件 3.2.1、Java 7。
    对应构建组件需已在 AIDE 安装。工程无 Gradle Wrapper。
 
-本次交付仅含源码与 AIDE 所需的 Hook JAR，不包含 APK。
+源码包包含源码与 AIDE 所需的 Hook JAR；已打包 APK 可从 [v7.0 Release](https://github.com/286479857/NetDelayBlock/releases/tag/v7.0) 下载。
 默认延迟 5 秒，默认不勾选从后台重新打开时重新计时。
 覆盖安装会保留此前保存的设置；需要调整现有安装时，请手动设为 5 秒并取消勾选后保存。
 
@@ -84,7 +84,7 @@ APK 检查：python3 tools/check_apk.py /path/to/module.apk
 ## 验证
 
 app Java 文件在没有 Xposed API 的编译路径下编译通过。
-Hook JAR 单独编译并检查，只含本模块类。本版仅交付源码，未生成 APK；编译用 Hook JAR 不含 Xposed API 类定义。
+Hook JAR 单独编译并检查，只含本模块类。编译用 Hook JAR 不含 Xposed API 类定义。后续补充作者提供的已打包 APK，静态检查通过：模块入口与资源存在，未打包 Xposed API 类定义。
 Root 防火墙逻辑沿用已确认可用的版本，本次仅调整默认设置。
 没有真实 AIDE Pro 或 LSPosed 手机可供实测，因此不承诺已实机验证所有行为。
 
