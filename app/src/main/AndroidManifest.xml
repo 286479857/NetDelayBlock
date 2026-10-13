@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.netdelay">
+    <application android:label="启动联网延迟 Root" android:icon="@mipmap/ic_launcher" android:theme="@android:style/Theme.Material.Light.NoActionBar" android:allowBackup="false">
+        <meta-data android:name="xposedmodule" android:value="true" />
+        <meta-data android:name="xposeddescription" android:value="Root IPv4/IPv6 UID 防火墙启动拦截，时长可自定义" />
+        <meta-data android:name="xposedminversion" android:value="82" />
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <provider android:name=".SettingsProvider" android:authorities="com.example.netdelay.settings" android:exported="true" />
+    </application>
+</manifest>

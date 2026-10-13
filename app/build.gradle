@@ -1,0 +1,57 @@
+apply plugin: 'com.android.application'
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+        applicationId 'com.example.netdelay'
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 7
+        versionName '7.0-defaults'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    buildTypes { release { minifyEnabled false } }
+}
+// This JAR contains only our startup detector, never the Xposed API.
+dependencies { compile files('libs/netdelay-hooks.jar') }
+
+// Reject APKs containing Xposed API class DEFINITIONS. References are expected.
+def verifyApiExcluded = { File apk ->
+    def zip = new java.util.zip.ZipFile(apk)
+    try {
+        zip.entries().each { entry ->
+            if (entry.name ==~ /classes[0-9]*\.dex/) {
+                byte[] data = zip.getInputStream(entry).bytes
+                def buffer = java.nio.ByteBuffer.wrap(data).order(java.nio.ByteOrder.LITTLE_ENDIAN)
+                int strings = buffer.getInt(60)
+                int types = buffer.getInt(68)
+                int count = buffer.getInt(96)
+                int classes = buffer.getInt(100)
+                for (int i = 0; i < count; i++) {
+                    int type = buffer.getInt(classes + i * 32)
+                    int stringIndex = buffer.getInt(types + type * 4)
+                    int position = buffer.getInt(strings + stringIndex * 4)
+                    while ((data[position] & 128) != 0) position++
+                    position++
+                    int end = position
+                    while (data[end] != 0) end++
+                    String name = new String(data, position, end - position, 'UTF-8')
+                    if (name.startsWith('Lde/robv/android/xposed/') || name == 'Landroid/app/AndroidAppHelper;')
+                        throw new GradleException('Xposed API was packaged into APK: ' + name + '. Keep API provided and outside app/libs.')
+                }
+            }
+        }
+    } finally { zip.close() }
+}
+afterEvaluate {
+    android.applicationVariants.all { variant ->
+        variant.assemble.doLast {
+            variant.outputs.each { output ->
+                if (output.outputFile != null && output.outputFile.exists()) verifyApiExcluded(output.outputFile)
+            }
+        }
+    }
+}

@@ -1,0 +1,1 @@
+Built-in image generation. Android launcher icon: white Wi-Fi crossed by coral-red circular prohibition slash, deep navy-to-teal full-bleed background, no text; large legible forms, centered. Original raster generated; launcher PNGs resampled for Android density buckets. Adaptive icon inset preserves mark inside launcher masks.
